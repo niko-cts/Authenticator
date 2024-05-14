@@ -1,0 +1,15 @@
+# If 'bypass-if-whitelisted' is true, the player will connect to the server without checking for their ip
+# 'add-to-whitelist' adds the player to the whitelist if ip is accepted
+whitelist:
+  bypass-if-whitelisted: true
+  add-to-whitelist: true
+
+# Whitelisted-IPs
+ip:
+  statics: ['127.0.0.1']
+  range: '127.0.0.1-127.0.0.1'
+
+# Message when kicked and when added to whitelist (empty for no message)
+message:
+  kick: '&cYou are not whitelisted/n&7Contact a server administrator, if you feel like this is an error'
+  whitelisted: '&7You are now whitelisted.'

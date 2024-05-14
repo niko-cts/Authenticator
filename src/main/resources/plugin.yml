@@ -1,0 +1,5 @@
+name: IPAuthenticator
+version: '${project.version}'
+main: chatzis.nikolas.mc.authenticator.IPAuthenticator
+api-version: '1.20'
+authors: [Nikolas Chatzis]
