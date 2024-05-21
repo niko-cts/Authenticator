@@ -5,8 +5,10 @@ whitelist:
   add-to-whitelist: true
 
 # Whitelisted-IPs
+# You can either set an array of static ips with the netmask (/xx) or a whole range of accepted ips.
+# An online calculation can be found here: https://www.calculator.net/ip-subnet-calculator.html
 ip:
-  statics: ['127.0.0.1']
+  statics: ['127.0.0.1', '192.168.1.0/24']
   range: '127.0.0.1-127.0.0.1'
 
 # Message when kicked and when added to whitelist (empty for no message)

@@ -9,14 +9,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * IPAuthenticator main class.
  * Implements LoginEvent to check if user is in ip range.
+ *
  * @author Nikolas Chatzis
  */
 public final class IPAuthenticator extends JavaPlugin implements Listener {
@@ -75,10 +73,17 @@ public final class IPAuthenticator extends JavaPlugin implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         if (event.getPlayer().hasPermission("ipauthenticator.bypass") ||
-                (bypassIfWhitelisted && event.getPlayer().isWhitelisted()))
+            (bypassIfWhitelisted && event.getPlayer().isWhitelisted()))
             return;
 
-        if (whitelistedHosts.contains(event.getRealAddress().getHostAddress()) || isInWhitelistedRange(event.getRealAddress())) {
+        boolean staticWhitelisted = false;
+        try {
+            staticWhitelisted = IPUtil.isStaticWhitelisted(whitelistedHosts, event.getRealAddress());
+        } catch (NumberFormatException | IllegalStateException e) {
+            getLogger().warning("There was an error in your configuration! A static ip was not set correct: " + e.getCause());
+        }
+
+        if (staticWhitelisted || isInWhitelistedRange(event.getRealAddress())) {
             if (addToWhitelist) {
                 event.getPlayer().setWhitelisted(true);
                 getLogger().info("Whitelisted: " + event.getPlayer().getName());
@@ -92,6 +97,7 @@ public final class IPAuthenticator extends JavaPlugin implements Listener {
             event.setKickMessage(ChatColor.translateAlternateColorCodes('&', kickMessage.replace("/n", "\n")));
             event.setResult(PlayerLoginEvent.Result.KICK_WHITELIST);
         }
+
     }
 
     private boolean isInWhitelistedRange(InetAddress check) {
